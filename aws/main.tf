@@ -40,3 +40,11 @@ resource "aws_subnet" "development-subnet-2" {
     Name = "development-subnet-2"
   }
 }
+
+output "development_vpc_id" {
+  value = aws_vpc.development-vpc.id
+}
+
+output "development_subnet_id" {
+  value = aws_subnet.development-subnet-2.id
+}
