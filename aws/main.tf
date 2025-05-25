@@ -12,10 +12,25 @@ provider "aws" {
   region = "us-east-2"
 }
 
+# This is a way to capture and reference variables in terraform
+variable "vpc_cidr_block" {
+  description = "value of the vpc cidr block"
+}
+
+# This is a way to capture and reference variables in terraform
+variable "subnet_cidr_block" {
+  description = "value of the subnet cidr block"
+}
+
+variable "environment" {
+  description = "value of the resource environment"
+}
+
 resource "aws_vpc" "development-vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr_block
   tags = {
-    Name    = "development-vpc"
+    Name = "development-vpc"
+    Environment = var.environment
   }
 }
 
@@ -25,6 +40,7 @@ resource "aws_subnet" "development-subnet-1" {
   availability_zone = "us-east-2a"
   tags = {
     Name = "development-subnet-1"
+    Environment = var.environment
   }
 
 }
@@ -34,10 +50,11 @@ data "aws_vpc" "existing-vpc" {
 
 resource "aws_subnet" "development-subnet-2" {
   vpc_id            = data.aws_vpc.existing-vpc.id
-  cidr_block        = "172.31.48.0/20"
+  cidr_block        = var.subnet_cidr_block
   availability_zone = "us-east-2a"
   tags = {
     Name = "development-subnet-2"
+    Environment = var.environment
   }
 }
 
