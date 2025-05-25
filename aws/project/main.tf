@@ -48,3 +48,27 @@ resource "aws_subnet" "myapp-subnet-1" {
     Name = "myapp-${var.environment_prefix}-subnet-1"
   }
 }
+
+resource "aws_internet_gateway" "myapp-igw" {
+  vpc_id = aws_vpc.myapp-vpc.id
+  tags = {
+    Name = "myapp-${var.environment_prefix}-igw"
+  }
+}
+
+resource "aws_route_table" "myapp-aws_route_table" {
+  vpc_id = aws_vpc.myapp-vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.myapp-igw.id
+  }
+  tags = {
+    Name = "myapp-${var.environment_prefix}-route-table"
+  }
+}
+
+resource "aws_route_table_association" "myapp-aws_route_table_association" {
+  subnet_id      = aws_subnet.myapp-subnet-1.id
+  route_table_id = aws_route_table.myapp-aws_route_table.id
+}
