@@ -15,11 +15,13 @@ provider "aws" {
 # This is a way to capture and reference variables in terraform
 variable "vpc_cidr_block" {
   description = "value of the vpc cidr block"
+  type = string
 }
 
 # This is a way to capture and reference variables in terraform
 variable "subnet_cidr_block" {
   description = "value of the subnet cidr block"
+  type = string
 }
 
 variable "environment" {
